@@ -1,0 +1,67 @@
+public class Main {
+
+    public static void main(String[] args) throws NumberFormatException, IOException {
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+        int nplayers = Integer.parseInt(in.readLine());
+        int nroles = Integer.parseInt(in.readLine());
+
+        int[][] constraints = new int[nroles][2];
+
+        for(int i=0; i<nroles; i++) {
+            String[] line = in.readLine().split(" ");
+
+            int constraint = Integer.parseInt(line[1]);
+
+            if(line[0].equals("MAX")) {
+                constraints[i][0] = 0;
+                constraints[i][1] = constraint;
+            }
+            else {
+                constraints[i][0] = constraint;
+                constraints[i][1] = nplayers;
+            }
+        }
+
+        System.out.println(Solver.solve(nplayers,nroles,constraints));
+    }
+}
+
+public class Solver {
+
+    public static long solve(int nplayers, int nroles, int[][] constraints) {
+        long[][] matrix = new long[nroles][nplayers+1];
+
+        for(int r=0; r<nroles; r++) {
+            matrix[r][0] = 0;
+        }
+
+        for(int p=1; p<=nplayers; p++) {
+            if(p < constraints[0][0])
+                matrix[0][p] = 0;
+            else
+                matrix[0][p] = 1;
+        }
+
+        for(int r=1; r<nroles; r++) {
+            for(int p=1; p<=nplayers; p++) {
+                long acum = 0;
+                for (int k=constraints[r][0]; k<=constraints[r][1]; k++) {
+                    int pk = p-k;
+                    if(pk >= 0) acum += matrix[r-1][pk];
+                }
+                matrix[r][p] = acum;
+            }
+        }
+
+        printMatrix(matrix);
+        return matrix[nroles-1][nplayers];
+    }
+
+    public static void printMatrix(long[][] mat)
+    {
+        for (long[] longs : mat) System.out.println(Arrays.toString(longs));
+        System.out.println();
+    }
+}

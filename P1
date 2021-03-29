@@ -1,0 +1,60 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Main {
+
+    public static void main(String[] args) throws NumberFormatException, IOException {
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+        int ngames = Integer.parseInt(in.readLine());
+
+        BeansGame[] games = new BeansGame[ngames];
+
+        for(int i=0; i<ngames; i++) {
+            String[] line;
+
+            line = in.readLine().split(" ");
+            int npiles = Integer.parseInt(line[0]);
+            int gamedepth = Integer.parseInt(line[1]);
+
+            line = in.readLine().split(" ");
+            int[] piles = new int[line.length];
+            for(int j=0; j < line.length; j++) {
+                piles[j] = Integer.parseInt(line[j]);
+            }
+
+            boolean firstJaba = in.readLine().toLowerCase().contains("jaba");
+
+            games[i] = new BeansGame(npiles,gamedepth,piles,firstJaba);
+        }
+
+        for (BeansGame game : games) {
+            System.out.println(game.solve());
+        }
+    }
+}
+
+
+
+
+
+public class BeansGame {
+
+    private int npiles;
+    private int gamedepth;
+    private int[] piles;
+    private boolean firstJaba;
+
+    public BeansGame(int npiles, int gamedepth, int[] piles, boolean firstJaba) {
+        this.npiles = npiles;
+        this.gamedepth = gamedepth;
+        this.piles = piles;
+        this.firstJaba = firstJaba;
+    }
+
+    public int solve() {
+
+    }
+}
